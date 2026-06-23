@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="mb-4">
+    <h3 style="font-weight: 700; color: var(--text-dark);">Edit Task</h3>
+    <p class="text-muted">Update the task details below</p>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card-clean">
+            <form action="" method="post" novalidate>
+                {{ form.hidden_tag() }}
+                
+                <div class="mb-4">
+                    {{ form.title.label(class="form-label") }}
+                    {{ form.title(class="form-control", placeholder="Enter task title") }}
+                    {% for error in form.title.errors %}
+                        <div class="text-danger mt-1" style="font-size: 0.85rem;">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                
+                <div class="mb-4">
+                    {{ form.description.label(class="form-label") }}
+                    {{ form.description(class="form-control", rows="4", placeholder="Enter task description") }}
+                    {% for error in form.description.errors %}
+                        <div class="text-danger mt-1" style="font-size: 0.85rem;">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                
+                <div class="mb-4">
+                    {{ form.due_date.label(class="form-label") }}
+                    {{ form.due_date(class="form-control", type="date") }}
+                    {% for error in form.due_date.errors %}
+                        <div class="text-danger mt-1" style="font-size: 0.85rem;">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                
+                <div class="row mb-5">
+                    <div class="col-md-6">
+                        {{ form.priority.label(class="form-label") }}
+                        {{ form.priority(class="form-select") }}
+                        {% for error in form.priority.errors %}
+                            <div class="text-danger mt-1" style="font-size: 0.85rem;">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    <div class="col-md-6 mt-4 mt-md-0">
+                        {{ form.status.label(class="form-label") }}
+                        {{ form.status(class="form-select") }}
+                        {% for error in form.status.errors %}
+                            <div class="text-danger mt-1" style="font-size: 0.85rem;">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                <div class="d-flex justify-content-end gap-3">
+                    <a href="{{ url_for('tasks') }}" class="btn btn-light" style="border: 1px solid var(--border-color); font-weight: 600;">Cancel</a>
+                    {{ form.submit(class="btn btn-primary") }}
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

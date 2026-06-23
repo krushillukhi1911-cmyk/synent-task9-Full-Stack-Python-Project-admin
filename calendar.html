@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="mb-4">
+    <h3 style="font-weight: 700; color: var(--text-dark);">Calendar</h3>
+    <p class="text-muted">Schedule and manage your upcoming tasks</p>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card-clean h-100">
+            <h5 class="card-title-clean">Upcoming Schedule</h5>
+            
+            {% if tasks %}
+                <div class="timeline mt-4">
+                    {% set current_date = None %}
+                    {% for task in tasks %}
+                        {% if task.due_date != current_date %}
+                            {% set current_date = task.due_date %}
+                            <div class="mt-4 mb-3 pb-2" style="border-bottom: 2px solid var(--border-color);">
+                                <h6 style="font-weight: 700; color: var(--primary-blue);"><i class="fa-regular fa-calendar me-2"></i>{{ current_date.strftime('%A, %b %d, %Y') }}</h6>
+                            </div>
+                        {% endif %}
+                        
+                        <div class="d-flex justify-content-between align-items-center mb-3 p-3" style="background: var(--bg-main); border-radius: 8px; border-left: 4px solid {% if task.priority == 'High' %}var(--accent-red){% elif task.priority == 'Medium' %}var(--accent-yellow){% else %}var(--primary-blue){% endif %};">
+                            <div>
+                                <h6 class="mb-1" style="font-weight: 600; color: var(--text-dark);">{{ task.title }}</h6>
+                                <p class="text-muted mb-0" style="font-size: 0.85rem;">{{ task.description[:60] }}{% if task.description|length > 60 %}...{% endif %}</p>
+                            </div>
+                            <div class="text-end">
+                                <span class="badge-status {{ task.status.lower().replace(' ', '-') }} d-block mb-2">{{ task.status }}</span>
+                                <a href="{{ url_for('edit_task', task_id=task.id) }}" class="btn-action"><i class="fa-solid fa-pen-to-square"></i></a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="text-center py-5">
+                    <i class="fa-regular fa-calendar-xmark text-muted mb-3" style="font-size: 3rem;"></i>
+                    <p class="text-muted">You have no tasks scheduled.</p>
+                    <a href="{{ url_for('create_task') }}" class="btn btn-primary mt-2">Create Task</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    <div class="col-lg-4 mt-4 mt-lg-0">
+        <div class="card-clean text-center h-100 d-flex flex-column justify-content-center align-items-center py-5">
+            <i class="fa-regular fa-calendar-check" style="font-size: 4rem; color: var(--primary-blue); margin-bottom: 20px;"></i>
+            <h5 style="font-weight: 700; color: var(--text-dark);">Full Calendar View</h5>
+            <p class="text-muted mb-4 px-3" style="font-size: 0.9rem;">We are currently working on a full grid-based calendar integration. Stay tuned for updates!</p>
+            <button class="btn btn-light" style="border: 1px solid var(--border-color); font-weight: 600;" disabled>Coming Soon</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
